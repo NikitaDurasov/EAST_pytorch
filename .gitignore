@@ -3,3 +3,5 @@ venv
 dev.ipynb
 .idea
 tests
+*/__pycache__/
+__pycache__/

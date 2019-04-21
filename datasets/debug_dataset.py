@@ -34,6 +34,10 @@ class DebugDataset(Dataset):
         img = np.array(Image.open(img_file))
         bboxes = dataset_utils.read_gt(gt_file)
 
+        # TODO vectorize me
+        for i in range(len(bboxes)):
+            bboxes[i] = dataset_utils.bbox_order(bboxes[i])
+
         sample = {"image": img, "bboxes": bboxes}
 
         if self.transform:

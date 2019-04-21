@@ -100,7 +100,7 @@ def shrink_bbox(bbox, scale=0.2):
     new_points[2] = new_points[2] - second_direction
     new_points[1] = new_points[1] + second_direction
 
-    return new_points.ravel()
+    return bbox_order(new_points.ravel())
 
 
 def rectangle_borders_distances(bbox, points):
@@ -156,9 +156,68 @@ def generate_bbox_interion(bbox, shape):
     points = skimage.draw.polygon(bbox[::2], bbox[1::2], shape=shape)
     return np.vstack([points[0], points[1]]).T
 
-def quad_shifts(bbox, points):
-    pass
 
-# TODO function that restore right order of in bbox: first point is upper left
+def quad_shifts(bbox, points):
+    """Calculates vector shift for points to bbox vertexes
+
+    Args:
+        bbox (numpy.array): float numpy array with shape (8,) that
+        contains coordinates of polygon vertexes.
+
+        points (numpy.array): float numpy array with shape (*, 8) that
+        contains coordinates of considered points.
+
+    Returns:
+        numpy.array: float numpy array with shape (*, 8) that contains
+        shifts vectors from points to bbox vertexes, e.g.
+        bbox = (v1, v2, v3, v4) and point in z = (x, y), then result is
+        (v1 - x, v2 - x, v3 - x, v4 - x)
+
+    """
+    upper_left_diff = bbox.reshape(4, 2)[0] - points
+    upper_right_diff = bbox.reshape(4, 2)[1] - points
+    lower_right_diff = bbox.reshape(4, 2)[2] - points
+    lower_left_diff = bbox.reshape(4, 2)[3] - points
+    return np.hstack([upper_left_diff, upper_right_diff,
+                      lower_right_diff, lower_left_diff])
+
+
 def bbox_order(bbox):
-    pass
+    """Fixing bbox vertexes order: upper-left points is the first, other
+    follows in clockwise manner.
+
+    Args:
+        bbox (numpy.array): float numpy array with shape (8,) that
+        contains coordinates of polygon vertexes.
+
+    Returns:
+        numpy.array: float numpy array with shape (8,) that
+        contains coordinates of fixed order polygon vertexes.
+
+    """
+
+    def mapping(x):
+        if x == 0:
+            return 3
+        elif x == 1:
+            return 0
+        elif x == 2:
+            return 2
+        elif x == 3:
+            return 1
+
+    mapping = np.vectorize(mapping)
+
+    box_points = bbox.reshape(4, 2)
+    mean_point = box_points.mean(axis=0)
+    new_res = quad_shifts(bbox, mean_point).reshape(4,2)
+    positive_values = new_res >= 0
+    new_order = mapping(positive_values.sum(axis=1) + positive_values[:, 0])
+    return box_points[new_order].ravel()
+
+
+def short_length_bbox_size(bboxes):
+    bb_points = bboxes.reshape(-1, 4, 2)
+    first_lengths = np.linalg.norm(bb_points[:, 1] - bb_points[:, 0], axis=1)
+    second_lengths = np.linalg.norm(bb_points[:, 2] - bb_points[:, 1], axis=1)
+    return np.stack([first_lengths, second_lengths]).T.min(axis=1)

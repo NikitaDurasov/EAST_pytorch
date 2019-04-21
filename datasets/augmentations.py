@@ -33,11 +33,11 @@ class QUAD:
     def __init__(self, scale=0.15):
         self.scale = scale
 
-    # TODO FIX ME quad need to calculate bbox shift for points
     def __call__(self, sample):
         image, bboxes = sample['image'], sample['bboxes']
 
         bbox_map = np.zeros(image.shape[:2])
+        quad_formatting = np.zeros(list(image.shape[:2]) + [8])
         for bbox in bboxes:
             rectangle_bbox = dataset_utils.generate_minimum_quad_orthogon(bbox)
             crop_bbox = dataset_utils.shrink_bbox(rectangle_bbox,
@@ -45,7 +45,9 @@ class QUAD:
             bb_interior = dataset_utils.generate_bbox_interion(crop_bbox,
                                                                image.shape[:2])
             bbox_map[bb_interior[:, 1], bb_interior[:, 0]] = 1
+            quad = dataset_utils.quad_shifts(bbox, bb_interior)
+            quad_formatting[bb_interior[:, 1], bb_interior[:, 0]] = quad
 
         return {"image": image,
                 "bbox_map": bbox_map,
-                "bboxes": bboxes}
+                "quad_formatting": quad_formatting}
