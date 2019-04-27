@@ -92,7 +92,7 @@ class EAST(torch.nn.Module):
 
         merged_features = self.feature_merging_branch[4](ftm1)
 
-        score_map = self.score_map_conv(merged_features)
+        score_map = torch.nn.functional.sigmoid(self.score_map_conv(merged_features))
         if self.kind == 'quad':
             geometry = self.quad_conv(merged_features)
 
