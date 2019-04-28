@@ -27,6 +27,7 @@ class RBOX:
                 "bbox_map": bbox_map,
                 "distances_map": dist_map}
 
+
 class QUAD:
 
     def __init__(self, scale=0.15):
@@ -38,15 +39,13 @@ class QUAD:
         bbox_map = np.zeros(image.shape[:2])
         quad_formatting = np.zeros(list(image.shape[:2]) + [8])
         ignore_map = np.ones(image.shape[:2])
+
         for bbox in bboxes:
             rectangle_bbox = dataset_utils.generate_minimum_quad_orthogon(bbox)
-            crop_bbox = dataset_utils.shrink_bbox(rectangle_bbox,
-                                                  scale=self.scale)
+            crop_bbox = dataset_utils.shrink_bbox(rectangle_bbox, self.scale)
 
-            bb_interior = dataset_utils.generate_bbox_interion(crop_bbox,
-                                                               image.shape[:2])
-            full_interior = dataset_utils.generate_bbox_interion(rectangle_bbox,
-                                                                 image.shape[:2])
+            bb_interior = dataset_utils.generate_bbox_interion(crop_bbox, image.shape[:2])
+            full_interior = dataset_utils.generate_bbox_interion(rectangle_bbox, image.shape[:2])
 
             ignore_map[full_interior[:, 1], full_interior[:, 0]] = 0
             ignore_map[bb_interior[:, 1], bb_interior[:, 0]] = 1
@@ -71,7 +70,6 @@ class RandomCrop:
         quad_formatting = sample['quad_formatting']
         ignore_map = sample['ignore_map']
 
-        
         new_x_b = np.random.randint(0, image.shape[1] - self.crop_size[1])
         new_y_b = np.random.randint(0, image.shape[0] - self.crop_size[0])
         
@@ -84,6 +82,7 @@ class RandomCrop:
                       "ignore_map": ignore_map[new_y_b:new_y_e, new_x_b:new_x_e]}
         
         return new_sample
+
     
 class Normalize:
     
