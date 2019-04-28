@@ -38,7 +38,7 @@ class DebugDataset(Dataset):
         for i in range(len(bboxes)):
             bboxes[i] = dataset_utils.bbox_order(bboxes[i])
 
-        sample = {"image": img, "bboxes": bboxes}
+        sample = {"image": img, "bbox": bboxes}
 
         if self.transform:
             sample = self.transform(sample)
