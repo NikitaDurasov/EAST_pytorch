@@ -97,4 +97,4 @@ class EAST(torch.nn.Module):
             geometry = self.quad_conv(merged_features)
 
         return {'score_map': score_map,
-                'geometry': torch.exp(geometry)}
+                'geometry': geometry}

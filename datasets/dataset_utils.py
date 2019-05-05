@@ -27,7 +27,7 @@ def read_gt(filename):
     return bboxes.astype('float32')
 
 
-def draw_bbox(bbox):
+def draw_bbox(bbox, c='r'):
     """Drawing given bbox borders.
 
     Args:
@@ -35,12 +35,12 @@ def draw_bbox(bbox):
         contains coordinates of polygon vertexes.
 
     """
-    plt.plot(bbox[::2], bbox[1::2], c='r')
+    plt.plot(bbox[::2], bbox[1::2], c=c)
     plt.plot([bbox[-2], bbox[0]],
-             [bbox[-1], bbox[1]], c='r')
+             [bbox[-1], bbox[1]], c=c)
 
 
-def draw_bboxes(img, bboxes):
+def draw_bboxes(img, bboxes, c='r'):
     """Drawing given image and bboxes borders
 
     Args:
@@ -52,7 +52,7 @@ def draw_bboxes(img, bboxes):
     """
     plt.imshow(img)
     for bbox in bboxes:
-        draw_bbox(bbox)
+        draw_bbox(bbox, c)
 
 
 def normalize(vector):
