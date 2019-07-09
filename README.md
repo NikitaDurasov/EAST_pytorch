@@ -19,3 +19,4 @@ To start training procedure you need to run
 ```python
 python train.py
 ```
+Please find useful function for bounding box processing in [datasets_utils](https://github.com/nikitadurasov/EAST_pytorch/blob/master/datasets/dataset_utils.py) and basic implementation of EAST in models. Lanms directory consist of original authors code for locally aware NMS algorithm from paper (requires at least gcc 6 ).
