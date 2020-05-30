@@ -4,7 +4,7 @@ Pytorch implementation of EAST detector for text -- this version is not based on
 
 ## Usage 
 
-First of all you need to install [Pytorch](https://pytorch.org/?utm_source=Google&utm_medium=PaidSearch&utm_campaign=%2A%2ALP+-+TM+-+General+-+HV+-+RU&utm_adgroup=Install+PyTorch&utm_keyword=%2Binstall%20%2Bpytorch&utm_offering=AI&utm_Product=PyTorch&gclid=Cj0KCQjw6cHoBRDdARIsADiTTzbpH_VFIFaOoEmjySWPiLx9J5wkLwud2-SnaUIDQtpTXDNL1qEadcAaAlFREALw_wcB) and [dstorch](https://github.com/nikitadurasov/dstorch)
+First of all you need to install [pytorch](https://pytorch.org/?utm_source=Google&utm_medium=PaidSearch&utm_campaign=%2A%2ALP+-+TM+-+General+-+HV+-+RU&utm_adgroup=Install+PyTorch&utm_keyword=%2Binstall%20%2Bpytorch&utm_offering=AI&utm_Product=PyTorch&gclid=Cj0KCQjw6cHoBRDdARIsADiTTzbpH_VFIFaOoEmjySWPiLx9J5wkLwud2-SnaUIDQtpTXDNL1qEadcAaAlFREALw_wcB) and [dstorch](https://github.com/nikitadurasov/dstorch)
 
 Other required libraries: 
 * albumentations
